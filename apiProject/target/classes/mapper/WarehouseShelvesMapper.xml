@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.warehouse.WarehouseShelvesMapper">
+    <!--获取某个仓库下的所有结构-->
+    <select id="getAllShelvesByWarehouse" resultMap="ShelvesTree">
+        select * from warehouse_shelves where warehouse_id=#{warehouseId} and parent_id is NULL
+    </select>
+    <resultMap id="ShelvesTree" type="WarehouseShelves">
+        <id column="shelves_id" property="shelvesId" javaType="Integer"/>
+        <collection property="shelvesList" column="shelves_id" select="getNodeById"/>
+    </resultMap>
+    <select id="getNodeById"  resultMap="ShelvesTree">
+        select * from warehouse_shelves where parent_id=#{shelves_id}
+    </select>
+
+    <!--获取所有子货架-->
+    <select id="getAllSonShelvesById" resultMap="SonShelves">
+        select shelves_id,shelves_name from warehouse_shelves where shelves_id=#{shelvesId}
+    </select>
+    <resultMap id="SonShelves" type="WarehouseShelves">
+        <id column="shelves_id" property="shelvesId" javaType="Integer"/>
+        <result column="shelves_name" property="shelvesName" javaType="String" />
+        <collection property="shelvesList" column="shelves_id" select="getSonById"/>
+    </resultMap>
+    <select id="getSonById"  resultMap="SonShelves">
+        select shelves_id,shelves_name from warehouse_shelves where parent_id=#{shelves_id}
+    </select>
+</mapper>

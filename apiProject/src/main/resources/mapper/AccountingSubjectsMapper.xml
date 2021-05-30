@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.finance.AccountingSubjectsMapper">
+
+    <select id="getGeneralClassLedger" resultMap="AccountingSubjectsInfo">
+        SELECT a.*, SUM(v.borrow) as borrow_sum,SUM(v.credit) as credit_sum
+        FROM accounting_subjects a
+        LEFT JOIN voucher_item v on a.as_id = v.as_id
+<!--        left join voucher t on t.bv_id = v.bv_id-->
+<!--        <where>-->
+<!--            t.state = '已登账'-->
+<!--            <if test="startDate != null">-->
+<!--                and t.create_date between #{startDate} and #{endDate}-->
+<!--            </if>-->
+<!--        </where>-->
+        GROUP BY a.as_id
+    </select>
+    <resultMap id="AccountingSubjectsInfo" type="AccountingSubjects">
+        <id property="id" column="id"></id>
+        <result property="asId" column="as_id" />
+        <result property="name" column="name" />
+        <result property="range" column="range" />
+        <result property="type" column="type" />
+        <result property="borrowSum" column="borrow_sum" />
+        <result property="creditSum" column="credit_sum" />
+    </resultMap>
+</mapper>

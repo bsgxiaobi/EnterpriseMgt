@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.PurchaseInquiryMapper">
+    <!--================一对一=================-->
+    <select id="getAllPurchaseInquiry" resultMap="InquiryApply">
+        select * from purchase_inquiry
+        <where>
+            <if test="agentId != null">
+                agent_id = #{agentId}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="InquiryApply" type="purchaseInquiry">
+        <result property="poId" column="po_id"></result>
+        <association property="purchaseApply" column="po_id" javaType="PurchaseApply" select="getAllPurchaseApply"></association>
+    </resultMap>
+
+
+    <select id="getAllPurchaseApply" resultType="PurchaseApply">
+        select * from purchase_apply
+        <where>
+            po_id = #{po_id}
+            and state='批准'
+        </where>
+    </select>
+
+    <update id="updateInquiryState" parameterType="map">
+        update purchase_inquiry
+        set
+        inquiry_state = #{inquiryState},
+        approval = #{approval},
+        approval_date = #{approvalDate}
+        where pi_id = #{piId}
+    </update>
+
+    <!--获取还没入库的询价单-->
+    <select id="getAllPurchaseInquiryExcludePoId" resultType="PurchaseInquiry" parameterType="list">
+        select * from purchase_inquiry
+        where inquiry_state='审核通过'
+        <if test="list != null">
+            and
+            pi_id not in
+            <foreach open="(" close=")" separator="," collection="list" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

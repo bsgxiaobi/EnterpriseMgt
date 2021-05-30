@@ -1,0 +1,34 @@
+.el-form-item .el-form-item__label{
+	padding: 0 5px 0 0;
+}
+.el-input{
+	width: 125px;
+	padding: 0 7.5px;
+}
+.el-select-sex .el-input--suffix{
+	width: 75px;
+}
+.el-select-department .el-input--suffix{
+	width: 150px;
+}
+.el-collapse .el-collapse-item__header{
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	color: #42B983;
+}
+.el-select-academic .el-input--suffix{
+	width: 125px;
+}
+.el-table{
+	margin-top: 15px;
+	height: calc(100vh - 400px);
+}
+.el-table__header tr th{
+	text-align: center;
+	color: #2C3E50;
+}
+
+.el-pagination{
+	margin-top: 15px;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.personnel.AttendanceRecordMapper">
+
+    <select id="getAll" resultMap="AttendanceInfo">
+        select a.*,e.department_id,e.name,e.sex,d.title
+        from attendance_record a
+            left outer join employees e on a.employee_id = e.employee_id
+            left outer join department d on e.department_id = d.department_id
+        <where>
+            <if test="employeeId != null">
+                a.employee_id = #{employeeId}
+            </if>
+        </where>
+        ORDER BY a.update_date desc
+    </select>
+    <resultMap id="AttendanceInfo" type="AttendanceRecord">
+        <id property="aid" column="aid" javaType="Integer" />
+        <result property="employeeId" column="employee_id" javaType="Integer" />
+        <result property="type" column="type" javaType="String" />
+        <result property="equipment" column="equipment" javaType="String" />
+        <result property="updateDate" column="update_date" />
+        <result property="represent" column="represent" javaType="String" />
+        <result property="representState" column="represent_state" javaType="String" />
+        <result property="agentId" column="agent_id" javaType="Integer" />
+        <result property="representDate" column="represent_date" />
+        <result property="agentDate" column="agent_date" />
+        <association property="employees" javaType="Employees">
+            <result property="departmentId" column="department_id" javaType="Integer" />
+            <result property="name" column="name" javaType="String" />
+            <result property="sex" column="sex" javaType="String" />
+        </association>
+        <association property="employees.department" javaType="Department">
+            <result property="title" column="title" javaType="String" />
+        </association>
+    </resultMap>
+</mapper>

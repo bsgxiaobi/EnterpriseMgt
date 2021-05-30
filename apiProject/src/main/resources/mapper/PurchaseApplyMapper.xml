@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.PurchaseApplyMapper">
+
+    <!--================多对一=================-->
+    <select id="getAllPurchaseApply" resultMap="PurchaseApplyEmployee" parameterType="map">
+        select * from purchase_apply
+        <where>
+            <if test="state != null">
+                state = #{state}
+            </if>
+            <if test="employeeId != null">
+                and employee_id = #{employeeId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="PurchaseApplyEmployee" type="PurchaseApply">
+        <!--当嵌套子查询时，必须要将传递过去的值写一个对应字段，
+        否者查询出的结果有但是不会映射到实体类上-->
+        <result property="employeeId" column="employee_id"></result>
+        <!--复杂的属性，单独处理
+            对象：association
+            集合：collection-->
+        <!--嵌套子查询-->
+        <association property="employees" column="employee_id" javaType="Employees" select="getEmployeeName"></association>
+    </resultMap>
+    <select id="getEmployeeName" resultType="Employees">
+        select name from employees where employee_id = #{employee_id}
+    </select>
+
+    <update id="updateAuditState" parameterType="map">
+        update purchase_apply
+        <set>
+            state = #{state},
+            approver = #{approver},
+            approval_date = #{approvalDate}
+        </set>
+        where po_id = #{poId}
+    </update>
+
+
+    <select id="getAllPurchaseApplyById" resultType="purchaseApply" parameterType="list">
+        select * from purchase_apply
+        where po_id in
+        <foreach open="(" close=")" separator="," collection="list" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="getAllPurchaseApplyExcludePoId" resultType="purchaseApply" parameterType="list">
+        select * from purchase_apply
+        where state='批准' and
+        po_id not in
+        <foreach open="(" close=")" separator="," collection="list" item="item">
+            #{item}
+        </foreach>
+    </select>
+<!--    <cache></cache>-->
+</mapper>

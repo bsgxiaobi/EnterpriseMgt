@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.sales.SalesQuotationMapper">
+
+    <select id="getAllSalesQuotation" resultMap="QuotationEmployee">
+        select * from sales_quotation
+        <where>
+            <if test="employeeId != null">
+                agent = #{employeeId}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+    <resultMap id="QuotationEmployee" type="SalesQuotation">
+        <result property="agent" column="agent"></result>
+        <association property="employees" column="agent" javaType="Employees" select="getEmployeeName"></association>
+    </resultMap>
+    <select id="getEmployeeName" resultType="Employees">
+        select name from employees where employee_id = #{agent}
+    </select>
+
+    <select id="getAllDeliveryQuotation" resultMap="QuotationEmployee">
+        select * from sales_quotation
+        <where>
+            <if test="employeeId != null">
+                agent = #{employeeId}
+            </if>
+            and state != '待审批'
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.bishugui.project.utils.JwtUtils",
+      "sourceType": "com.bishugui.project.utils.JwtUtils"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.failure-time",
+      "type": "java.lang.Long",
+      "sourceType": "com.bishugui.project.utils.JwtUtils"
+    },
+    {
+      "name": "jwt.key",
+      "type": "java.lang.String",
+      "sourceType": "com.bishugui.project.utils.JwtUtils"
+    }
+  ],
+  "hints": []
+}

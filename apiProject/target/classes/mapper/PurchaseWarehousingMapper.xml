@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.PurchaseWarehousingMapper">
+    <select id="getAllPurchaseWarehousing" resultMap="WarehousingInquiry">
+        select * from purchase_warehousing
+        <where>
+            <if test="agentId != null">
+                agent_id = #{agentId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="WarehousingInquiry" type="purchaseWarehousing">
+        <result property="piId" column="pi_id"></result>
+        <association property="purchaseInquiry" column="pi_id" javaType="PurchaseInquiry" select="getAllPurchaseInquiry"></association>
+    </resultMap>
+    <select id="getAllPurchaseInquiry" resultType="PurchaseInquiry">
+        select * from purchase_inquiry
+        <where>
+            pi_id = #{pi_id}
+--             and inquiry_state='审核通过'
+        </where>
+    </select>
+</mapper>

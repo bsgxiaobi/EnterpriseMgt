@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.personnel.OvertimeRecordMapper">
+
+    <select id="getAll" resultMap="OvertimeRecordInfo">
+        select o.*,e.department_id,e.name,e.sex,d.title
+        from overtime_record o
+        left outer join employees e on o.employee_id = e.employee_id
+        left outer join department d on e.department_id = d.department_id
+        <where>
+            <if test="employeeId != null">
+                o.employee_id = #{employeeId}
+            </if>
+            <if test="id != null">
+                and o.or_id = #{id}
+            </if>
+        </where>
+        ORDER BY o.apply_date desc
+    </select>
+    <resultMap id="OvertimeRecordInfo" type="OvertimeRecord">
+        <id property="orId" column="or_id" javaType="Integer" />
+        <result property="employeeId" column="employee_id" javaType="Integer" />
+        <result property="applyDate" column="apply_date" />
+        <result property="startDate" column="start_date" />
+        <result property="applyHours" column="apply_hours" />
+        <result property="cause" column="cause" />
+        <result property="approver" column="approver" />
+        <result property="approvalDate" column="approval_date" />
+        <result property="applyState" column="apply_state" />
+        <association property="employees" javaType="Employees">
+            <result property="departmentId" column="department_id" javaType="Integer" />
+            <result property="name" column="name" javaType="String" />
+            <result property="sex" column="sex" javaType="String" />
+        </association>
+        <association property="employees.department" javaType="Department">
+            <result property="title" column="title" javaType="String" />
+        </association>
+    </resultMap>
+</mapper>

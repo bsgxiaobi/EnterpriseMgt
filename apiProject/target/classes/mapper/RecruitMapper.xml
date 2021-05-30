@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.personnel.RecruitMapper">
+
+    <select id="getAll" resultMap="RecordInfo">
+        select r.*,e.department_id,e.name,e.sex,d.title
+        from recruit r
+        left outer join employees e on r.apply_id = e.employee_id
+        left outer join department d on r.department_id = d.department_id
+        <where>
+            <if test="departmentId != null">
+                r.department_id = #{departmentId}
+            </if>
+            <if test="id != null">
+                and r.recruit_id = #{id}
+            </if>
+        </where>
+        ORDER BY r.apply_date desc
+    </select>
+
+    <resultMap id="RecordInfo" type="Recruit">
+        <id property="recruitId" column="recruit_id" javaType="Integer" />
+        <result property="applyId" column="apply_id" javaType="Integer" />
+        <result property="departmentId" column="department_id" />
+        <result property="applyDate" column="apply_date" />
+        <result property="post" column="post" />
+        <result property="num" column="num" />
+        <result property="speciality" column="speciality" />
+        <result property="duty" column="duty" />
+        <result property="requirement" column="requirement" />
+        <result property="salary" column="salary" />
+        <result property="applyState" column="apply_state" />
+        <result property="updateId" column="update_id" />
+        <result property="updateDate" column="update_date" />
+        <association property="employees" javaType="Employees">
+            <result property="departmentId" column="department_id" javaType="Integer" />
+            <result property="name" column="name" javaType="String" />
+            <result property="sex" column="sex" javaType="String" />
+        </association>
+        <association property="department" javaType="Department">
+            <result property="title" column="title" javaType="String" />
+        </association>
+    </resultMap>
+
+    <select id="getSelectResult" resultMap="RecordInfo" parameterType="map">
+        select r.*,e.department_id,e.name,e.sex,d.title
+        from recruit r
+        left outer join employees e on r.apply_id = e.employee_id
+        left outer join department d on r.department_id = d.department_id
+        <where>
+            <if test="departmentId != null">
+                r.department_id = #{departmentId}
+            </if>
+            <if test="startDate != null">
+                and r.apply_date between #{startDate} and #{endDate}
+            </if>
+        </where>
+        ORDER BY r.apply_date desc
+    </select>
+</mapper>

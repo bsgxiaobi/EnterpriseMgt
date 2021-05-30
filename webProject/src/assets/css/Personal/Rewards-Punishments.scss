@@ -1,0 +1,50 @@
+.rewards-punishments-main{
+	width: calc(100% - 30px);
+	/* height: 100%; */
+	height: calc(100% - 30px);
+	padding: 15px;
+	margin: 0 0;
+	background-color: #ffffff;
+}
+
+
+.el-form-item .el-form-item__label{
+	padding: 0 5px 0 0;
+}
+.el-input{
+	width: 125px;
+	padding: 0 7.5px;
+}
+.el-select-sex .el-input--suffix{
+	width: 75px;
+}
+.el-select-department .el-input--suffix{
+	width: 150px;
+}
+.el-collapse .el-collapse-item__header{
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	color: #42B983;
+}
+.el-select-academic .el-input--suffix{
+	width: 125px;
+}
+.employee-page{
+	width: 100%;
+	margin-top: 15px;
+	height: 30px;
+	background-color: #42B983;
+}
+.el-table{
+	margin-top: 15px;
+	height: calc(100vh - 315px);
+}
+.el-table__header tr th{
+	text-align: center;
+	color: #2C3E50;
+}
+
+.el-dialog__body{
+	padding: 10px 20px;
+}

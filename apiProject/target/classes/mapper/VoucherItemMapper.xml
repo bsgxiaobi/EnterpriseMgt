@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.finance.VoucherItemMapper">
+
+    <select id="getAllByParams" resultType="VoucherItem" parameterType="map">
+        select i.*
+        from voucher_item i
+        left outer join voucher v on i.bv_id = v.bv_id
+        <where>
+            v.state = "已登账"
+            <if test="asId != null">
+                and i.as_id = #{asId}
+            </if>
+            <if test="startDate != null">
+                and v.create_date between #{startDate} and #{endDate}
+            </if>
+        </where>
+        order by v.create_date
+    </select>
+    <resultMap id="VoucherItemInfo" type="VoucherItem">
+        <result property="asId" column="as_id"></result>
+        <!--复杂的属性，单独处理
+            对象：association
+            集合：collection-->
+        <!--嵌套子查询-->
+<!--        <association property="employees" column="employee_id" javaType="Employees" select="getEmployeeName"></association>-->
+    </resultMap>
+</mapper>

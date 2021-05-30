@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.PurchaseItemMapper">
+
+    <update id="updatePurchaseItemById" parameterType="list">
+        update purchase_item
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="purchase_price = case item_id " suffix="end,">
+                <foreach item="item" index="index" collection="list">
+                    when #{item.itemId} then #{item.purchasePrice}
+                </foreach>
+            </trim>
+            <trim prefix="purchase_total = case item_id " suffix="end,">
+                <foreach item="item" index="index" collection="list">
+                    when #{item.itemId} then #{item.purchaseTotal}
+                </foreach>
+            </trim>
+        </trim>
+        where item_id in
+        <foreach open="(" close=")" separator="," collection="list" item="item">
+            #{item.itemId}
+        </foreach>
+    </update>
+
+    <update id="updatePurchaseItemByIdForWareHousing" parameterType="list">
+        update purchase_item
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="warehousing_num = case item_id " suffix="end,">
+                <foreach item="item" index="index" collection="list">
+                    when #{item.itemId} then #{item.warehousingNum}
+                </foreach>
+            </trim>
+            <trim prefix="warehousing_total = case item_id " suffix="end,">
+                <foreach item="item" index="index" collection="list">
+                    when #{item.itemId} then #{item.warehousingTotal}
+                </foreach>
+            </trim>
+        </trim>
+        where item_id in
+        <foreach open="(" close=")" separator="," collection="list" item="item">
+            #{item.itemId}
+        </foreach>
+    </update>
+</mapper>

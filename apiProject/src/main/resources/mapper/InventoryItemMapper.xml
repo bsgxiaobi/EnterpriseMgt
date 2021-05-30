@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.warehouse.InventoryItemMapper">
+
+    <select id="getAllInventoryItemByShelves" resultMap="InventoryItemMap">
+        select i.*,w.warehouse_name,s.shelves_name
+        from inventory_item i
+            left outer join warehouse w on i.warehouse_id = w.warehouse_id
+            left outer join warehouse_shelves s on i.shelves_id = s.shelves_id
+        where i.shelves_id=#{shelvesId}
+    </select>
+    <resultMap id="InventoryItemMap" type="InventoryItem">
+        <id property="iiId" column="ii_id" javaType="Integer" />
+        <result property="shelvesId" column="shelves_id" javaType="Integer" />
+        <result property="warehouseId" column="warehouse_id" javaType="Integer" />
+        <result property="productCode" column="product_code" javaType="String" />
+        <result property="title" column="title" javaType="String" />
+        <result property="abstracts" column="abstracts" javaType="String" />
+        <result property="model" column="model" javaType="String" />
+        <result property="unit" column="unit" javaType="String" />
+        <result property="sum" column="sum" javaType="Integer" />
+        <result property="price" column="price" javaType="Double" />
+        <result property="total" column="total" javaType="Double" />
+        <association property="warehouse" javaType="Warehouse">
+            <id property="warehouseId" column="warehouse_id" javaType="Integer" />
+            <result property="warehouseName" column="warehouse_name" javaType="String" />
+        </association>
+        <association property="shelves" javaType="WarehouseShelves">
+            <id property="shelvesId" column="shelves_id" javaType="Integer" />
+            <result property="shelvesName" column="shelves_name" javaType="String" />
+        </association>
+    </resultMap>
+</mapper>

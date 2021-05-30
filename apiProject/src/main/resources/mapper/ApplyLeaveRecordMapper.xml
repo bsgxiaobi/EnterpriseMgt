@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.personnel.ApplyLeaveRecordMapper">
+
+    <select id="getAll" resultMap="ApplyLeaveInfo">
+        select a.*,e.department_id,e.name,e.sex,d.title
+        from apply_leave_record a
+        left outer join employees e on a.employee_id = e.employee_id
+        left outer join department d on e.department_id = d.department_id
+        <where>
+            <if test="employeeId != null">
+                a.employee_id = #{employeeId}
+            </if>
+            <if test="id != null">
+                and a.alr_id = #{id}
+            </if>
+        </where>
+        ORDER BY a.apply_date desc
+    </select>
+    <resultMap id="ApplyLeaveInfo" type="ApplyLeaveRecord">
+        <id property="alrId" column="alr_id" javaType="Integer" />
+        <result property="employeeId" column="employee_id" javaType="Integer" />
+        <result property="type" column="type" />
+        <result property="applyDate" column="apply_date" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="cause" column="cause" />
+        <result property="approver" column="approver" />
+        <result property="approvalDate" column="approval_date" />
+        <result property="applyState" column="apply_state" />
+        <result property="note" column="note" />
+        <association property="employees" javaType="Employees">
+            <result property="departmentId" column="department_id" javaType="Integer" />
+            <result property="name" column="name" javaType="String" />
+            <result property="sex" column="sex" javaType="String" />
+        </association>
+        <association property="employees.department" javaType="Department">
+            <result property="title" column="title" javaType="String" />
+        </association>
+    </resultMap>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.finance.SingleArMapper">
+
+    <select id="getAll" resultMap="SingleArInfo">
+        select * from single_ar
+        <where>
+            <if test="id != null">
+                sar_id = #{id}
+            </if>
+        </where>
+    </select>
+    <resultMap id="SingleArInfo" type="SingleAr">
+        <result property="cid" column="cid"></result>
+        <association property="customerInfo" column="cid" javaType="CustomerInfo" select="getCustomerInfo"></association>
+    </resultMap>
+    <select id="getCustomerInfo" resultType="CustomerInfo">
+        select name from customer_info where cid = #{cid}
+    </select>
+</mapper>

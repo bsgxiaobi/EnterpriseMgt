@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishugui.project.mapper.personnel.BusinessTripRecordMapper">
+
+    <select id="getAll" resultMap="BusinessTripRecordInfo">
+        select b.*,e.department_id,e.name,e.sex,d.title
+        from business_trip_record b
+        left outer join employees e on b.employee_id = e.employee_id
+        left outer join department d on e.department_id = d.department_id
+        <where>
+            <if test="employeeId != null">
+                b.employee_id = #{employeeId}
+            </if>
+            <if test="id != null">
+                and b.bt_id = #{id}
+            </if>
+        </where>
+        ORDER BY b.apply_date desc
+    </select>
+    <resultMap id="BusinessTripRecordInfo" type="BusinessTripRecord">
+        <id property="btId" column="bt_id" javaType="Integer" />
+        <result property="employeeId" column="employee_id" javaType="Integer" />
+        <result property="site" column="site" />
+        <result property="applyDate" column="apply_date" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="cause" column="cause" />
+        <result property="approver" column="approver" />
+        <result property="approvalDate" column="approval_date" />
+        <result property="applyState" column="apply_state" />
+        <result property="note" column="note" />
+        <result property="vehicle" column="vehicle" />
+        <result property="advance" column="advance" />
+        <result property="usedAmount" column="used_amount" />
+        <result property="refund" column="refund" />
+        <association property="employees" javaType="Employees">
+            <result property="departmentId" column="department_id" javaType="Integer" />
+            <result property="name" column="name" javaType="String" />
+            <result property="sex" column="sex" javaType="String" />
+        </association>
+        <association property="employees.department" javaType="Department">
+            <result property="title" column="title" javaType="String" />
+        </association>
+    </resultMap>
+</mapper>

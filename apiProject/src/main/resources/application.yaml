@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    username: bishugui
+    password: BSG500228
+    #enterprise_information
+    url: jdbc:mysql://localhost:3306/enterprise_information?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/static/images/,classpath:/static/,classpath:/static/public/,classpath:/static/public/imgs/
+#  jackson:
+#    #日期格式化
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
+#    #设置空如何序列化
+#    default-property-inclusion: non_null
+#    serialization:
+#      #格式化输出
+#      indent_output: true
+#      #忽略无法转换的对象
+#      fail_on_empty_beans: false
+#    deserialization:
+#      #允许对象忽略json中不存在的属性
+#      fail_on_unknown_properties: false
+#    parser:
+#      #允许出现特殊字符和转义符
+#      allow_unquoted_control_chars: true
+#      #允许出现单引号
+#      allow_single_quotes: true
+server:
+  port: 8082
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mapper/**.xml
+  type-aliases-package: com.bishugui.project.pojo
+jwt:
+  key: userlogin
+  failureTime: 3600000

@@ -1,0 +1,19 @@
+.department-main{
+	width: calc(100% - 30px);
+	/* height: 100%; */
+	height: calc(100% - 30px);
+	padding: 15px;
+	margin: 0 0;
+	background-color: #ffffff;
+}
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+}
+.el-dialog__body{
+	padding: 10px 20px;
+}
